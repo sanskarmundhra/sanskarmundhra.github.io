@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<!--
+  Test fixture for Pinterest ad-review integration testing.
+  Exhibits the "registration wall" pattern that Pinterest's merchant
+  guidelines disallow ("Force users to register to view the products"),
+  used here to provoke a LANDING_PAGE_HARDWALL disapproval so that the
+  rejected_reason_history / ad_rejected_label_history tables populate.
+  The form is inert: no action, no network calls, nothing stored.
+-->
+<title>Registration required to view this item</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff; --fg: #1a1a1a; --muted: #6b6b6b;
+    --line: #e2e2e2; --card: #fafafa; --accent: #1f5fbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#131313; --fg:#ededed; --muted:#9a9a9a; --line:#2c2c2c; --card:#1b1b1b; --accent:#7aa7f0; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.6 system-ui, -apple-system, Segoe UI, sans-serif;
+    display: grid; place-items: center; min-height: 100vh; padding: 2rem 1.25rem;
+  }
+  .gate {
+    width: 100%; max-width: 26rem; background: var(--card);
+    border: 1px solid var(--line); border-radius: 8px; padding: 2rem 1.75rem;
+  }
+  h1 { font-size: 1.15rem; margin: 0 0 .5rem; }
+  p { color: var(--muted); margin: 0 0 1.25rem; font-size: .95rem; }
+  .blurred {
+    border: 1px solid var(--line); border-radius: 6px; padding: 1rem;
+    margin-bottom: 1.25rem; filter: blur(4px); user-select: none;
+    pointer-events: none; color: var(--muted);
+  }
+  label { display: block; font-size: .8rem; text-transform: uppercase;
+          letter-spacing: .06em; color: var(--muted); margin-bottom: .35rem; }
+  input {
+    width: 100%; padding: .6rem .7rem; font: inherit; color: var(--fg);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 5px;
+  }
+  button {
+    margin-top: .9rem; width: 100%; padding: .65rem; font: inherit; font-weight: 600;
+    color: #fff; background: var(--accent); border: 0; border-radius: 5px; cursor: pointer;
+  }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .msg { margin-top: .9rem; font-size: .88rem; color: var(--accent); min-height: 1.4em; }
+  footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line);
+           font-size: .78rem; color: var(--muted); }
+</style>
+</head>
+<body>
+  <main class="gate">
+    <h1>Registration required to view this item</h1>
+    <p>Create a free account to see product details and pricing.</p>
+
+    <div class="blurred" aria-hidden="true">
+      Product details, pricing and availability are hidden until you register.
+    </div>
+
+    <label for="email">Email address</label>
+    <input id="email" type="text" autocomplete="off" placeholder="you@example.com">
+    <button id="go" type="button">Register to continue</button>
+    <p class="msg" id="msg" role="status"></p>
+
+    <footer>
+      Test page for API integration testing. This form does nothing &mdash; no data
+      is submitted, transmitted or stored, and no account is created.
+    </footer>
+  </main>
+
+<script>
+  document.getElementById('go').addEventListener('click', function () {
+    document.getElementById('msg').textContent =
+      'Test page — nothing was submitted or stored.';
+  });
+</script>
+</body>
+</html>
